@@ -3,17 +3,17 @@
 
 1. Настройка среды vscode для работы с YAML
 
-<img src="/img/testYaml.png" width=600px height=auto>
+<img src="/homeWork/1.1/img/testYaml.png" width=600px height=auto>
 
 2. Настройка среды vscode для работы с BASH
 
-<img src="/img/testBash.png" width=600px height=auto>
+<img src="/homeWork/1.1/img/testBash.png" width=600px height=auto>
 
 3. Настройка среды vscode для работы с JSON
 
-<img src="/img/testJsonnet.png" width=600px height=auto>
+<img src="/homeWork/1.1/img/testJsonnet.png" width=600px height=auto>
 
 4. Настройка среды vscode для работы с Terraform
 
-<img src="/img/testTerraform.png" width=600px height=auto>
+<img src="/homeWork/1.1/img/testTerraform.png" width=600px height=auto>
 
