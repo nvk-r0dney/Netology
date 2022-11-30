@@ -40,3 +40,6 @@
 13. Выполнено удаление одного файла и переименование второго
 <img src="img/deleted'n'moved.png" width="600px" height="auto">
 
+14. Проверка изменений командой git log и с помощью расширения в VSCode:
+<img src="img/git_log.png" width="600px" height="auto">
+<img src="img/vscode.png" width="600px" height="auto">
