@@ -37,3 +37,6 @@
 12. Созданы файлы will_be_deleted и will_be_moved
 <img src="img/move'n'delete.png" width="600px" height="auto">
 
+13. Выполнено удаление одного файла и переименование второго
+<img src="img/deleted'n'moved.png" width="600px" height="auto">
+
