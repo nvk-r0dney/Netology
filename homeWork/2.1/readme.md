@@ -13,4 +13,12 @@
 5. В рабочей папке репозитория произведена первоначальная настройка
 <img src="img/show.png" width="600px" height="auto">
 
-6. 
+6. Произведены манипуляции с изменениями и командами git status и git diff
+<img src="img/git_status.png" width="600px" height="auto">
+
+<img src="img/git_status_2.png" width="600px" height="auto">
+
+<img src="img/git_diff_staged.png" width="600px" height="auto">
+
+7. После этого осуществлен коммит
+<img src="git_commit_status.png" width="600px" height="auto">
