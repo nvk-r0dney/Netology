@@ -20,5 +20,7 @@
 
 <img src="img/git_diff_staged.png" width="600px" height="auto">
 
+Вывод: команда git diff - отображает изменения в файлах еще не добавленных в коммит, при этом в это время команда git diff --staged не покажет ничего. После команды git add ситуация меняется, команда git diff --staged отображает изменения в файлах.
+
 7. После этого осуществлен коммит
-<img src="git_commit_status.png" width="600px" height="auto">
+<img src="img/git_commit_status.png" width="600px" height="auto">
