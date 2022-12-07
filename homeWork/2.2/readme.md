@@ -52,3 +52,7 @@
 для гитлаба:
 
 <img src="img/gitlab-tag.png" width="600px" height="auto">
+
+3. Добавлен и запушен аннотированный тэг
+
+<img src="img/git-a-tag.png" width="600px" height="auto">
