@@ -38,3 +38,17 @@
 1. Добавлен легковесный тэг к коммиту
 
 <img src="img/add-tag.png" width="600px" height="auto">
+
+2. Выполнен пуш тэгов в оба репозитория:
+
+<img src="img/push-tags.png" width="600px" height="auto">
+
+Список тэгов на старницах репозиториев выглядит следующим образом:
+
+для гитхаба:
+
+<img src="img/github-tag.png" width="600px" height="auto">
+
+для гитлаба:
+
+<img src="img/gitlab-tag.png" width="600px" height="auto">
