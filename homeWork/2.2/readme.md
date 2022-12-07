@@ -31,3 +31,10 @@
 6. История коммитов выглядит для всех репозиториев следующим образом:
 
 <img src="img/commit-log.png" width="600px" height="auto">
+
+
+### Задание №2
+
+1. Добавлен легковесный тэг к коммиту
+
+<img src="img/add-tag.png" width="600px" height="auto">
