@@ -56,3 +56,27 @@
 3. Добавлен и запушен аннотированный тэг
 
 <img src="img/git-a-tag.png" width="600px" height="auto">
+
+### Задание 3 и задание 4
+
+1. От коммита "Prepare to delete and move" создана ветка "fix", в ней внесено изменение в файл readme.md. Изменения добавлены в коммит и запушены в репозиторий на гитхабе.
+
+<img src="img/git-newbranch.png" width="600px" height="auto">
+
+2. В веб-интерфейсе новая ветка выглядит следуюшим образом
+
+<img src="img/github-newbrunch-web.png" width="600px" height="auto">
+
+<img src="img/github-network.png" width="600px" height="auto">
+
+3. А вот так выглядят ветки в VSCode с использованием расширения GitLens
+
+<img src="img/gitlens-vscode.png" width="600px" height="auto">
+
+4. В IDE VSCode управление репозиторием выглядит так
+
+<img src="img/ide-vscode.png" width="600px" height="auto">
+
+Как видно, в интерфейсе отражены все изменения и можно посмотреть в каком статусе находится каждый файл. Отсюда же можно выполнить коммит и синхронизацию с удаленным репозиторием.
+
+Последний коммит и синхронизация выполнены из  IDE VSCode.
