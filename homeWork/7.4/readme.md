@@ -135,4 +135,4 @@ partition by range (price);
 
 <img src="img/04-create-table.png" width=750px>
 
-И для колонки `title` добавляем в конце опцию `UNIQUE`.
+И для колонки `title` добавляем в конце опцию `UNIQUE`....
