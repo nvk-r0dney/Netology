@@ -1,10 +1,11 @@
 resource "yandex_compute_instance" "for-each-vm" {
-  for_each = { for key, value in var.hosts : key => value }
-
-  name = each.value.hostname
-  #platform_id = "standard-v2"
 
   depends_on = [yandex_compute_instance.count-vm]
+
+  for_each = { for key, value in var.hosts : key => value }
+
+  name        = each.value.hostname
+  platform_id = "standard-v1"
 
   resources {
     cores         = each.value.vcpu_cores
