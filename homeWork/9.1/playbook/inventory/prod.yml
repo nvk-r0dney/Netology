@@ -1,0 +1,22 @@
+---
+el:
+  hosts:
+    centos7:
+      ansible_user: centos
+      ansible_host: 158.160.113.160
+deb:
+  hosts:
+    ubuntu:
+      ansible_user: ubuntu
+      ansible_host: 158.160.110.150
+
+fedora:
+  hosts:
+    fedora:
+      ansible_user: fedora
+      ansible_host: 158.160.41.167
+
+inside:
+  hosts:
+    localhost:
+      ansible_connection: local
