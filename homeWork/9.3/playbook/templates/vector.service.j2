@@ -1,0 +1,14 @@
+[Unit]
+Description=Vector service
+
+[Service]
+User={{ vector_user }}
+Group={{ vector_user }}
+ExecStart=/usr/bin/vector --config-yaml /opt/vector/vector.yaml
+ExecReload=/usr/bin/vector validate --config-yaml /opt/vector/vector.yaml
+Restart=always
+StartLimitInterval=10
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

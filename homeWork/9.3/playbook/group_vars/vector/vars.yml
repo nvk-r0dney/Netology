@@ -1,0 +1,4 @@
+---
+vector_version: "0.30.0"
+vector_data_path: /var/lib/vector
+vector_user: cloud-user

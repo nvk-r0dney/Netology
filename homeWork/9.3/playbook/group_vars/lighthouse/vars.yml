@@ -1,0 +1,5 @@
+---
+nginx_user_name: cloud-user
+lighthouse_path: /var/www/
+lighthouse_site_path: /usr/share/nginx/lighthouse
+lighthouse_repo: https://github.com/VKCOM/lighthouse.git
