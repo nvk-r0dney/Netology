@@ -1,0 +1,39 @@
+---
+- name: Install Lighthouse | Install packages
+  ansible.builtin.dnf:
+    name:
+      - git
+      - epel-release
+    state: present
+
+- name: Install Lighthouse | Install nginx
+  ansible.builtin.dnf:
+    name:
+      - nginx
+    state: present
+
+- name: Install Lighthouse | Config nginx
+  ansible.builtin.template:
+    src: "./templates/nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    mode: "0755"
+  notify: Start nginx web-server
+  tags:
+    - config_nginx
+
+- name: Install lighthouse | Clone git repo
+  ansible.builtin.git:
+    repo: "{{ lighthouse_repo }}"
+    dest: "{{ lighthouse_site_path }}"
+    version: d701335c25cd1bb9b5155711190bad8ab852c2ce
+  tags:
+    - clone_repo_lighthouse
+
+- name: Lighthouse Install | Copy nginx site config file
+  ansible.builtin.template:
+    src: "./templates/lighthouse.conf.j2"
+    dest: "/etc/nginx/conf.d/lighthouse.conf"
+    mode: "0755"
+  notify: Start nginx web-server
+  tags:
+    - config_lighthouse_service

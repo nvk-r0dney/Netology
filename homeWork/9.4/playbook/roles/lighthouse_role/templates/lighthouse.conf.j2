@@ -1,0 +1,9 @@
+server {
+    server_name   localhost;
+    listen        8080;
+
+    location / {
+        root {{ lighthouse_site_path }};
+        index index.html;
+    }
+}

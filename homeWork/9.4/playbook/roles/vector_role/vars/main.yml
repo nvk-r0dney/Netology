@@ -1,0 +1,3 @@
+---
+vector_data_path: /var/lib/vector
+vector_user: cloud-user

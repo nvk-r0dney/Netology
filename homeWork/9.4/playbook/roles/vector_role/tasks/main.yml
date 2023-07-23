@@ -1,0 +1,55 @@
+---
+- name: Install Vector | Create dir for dst
+  ansible.builtin.file:
+    path: /opt/vector
+    state: directory
+    mode: "0777"
+
+- name: Install Vector | Download Vector distrib
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-x86_64-unknown-linux-musl.tar.gz"
+    dest: "/opt/vector"
+    mode: "0755"
+  tags:
+    - download_vector_distrib
+
+- name: Install Vector | Unpack Vector distrib
+  ansible.builtin.unarchive:
+    remote_src: true
+    src: /opt/vector/vector-{{ vector_version }}-x86_64-unknown-linux-musl.tar.gz
+    dest: /opt/vector/
+  tags:
+    - unpack_vector
+
+- name: Install Vector | Copy Vector.bin file
+  ansible.builtin.copy:
+    remote_src: true
+    src: /opt/vector/vector-x86_64-unknown-linux-musl/bin/vector
+    dest: /usr/bin
+    mode: "0755"
+  tags:
+    - copy_vector_and_install
+
+- name: Install Vector | Copy Vector-config file
+  ansible.builtin.template:
+    src: "./templates/vector.yaml.j2"
+    dest: "/opt/vector/vector.yaml"
+    mode: "0755"
+  tags:
+    - copy_vector_conf
+
+- name: Install Vector | Copy Vector systemd unit file
+  ansible.builtin.template:
+    src: "./templates/vector.service.j2"
+    dest: "/etc/systemd/system/vector.service"
+    mode: "0755"
+  notify: Restart Vector
+  tags:
+    - create_vector_service
+
+- name: Install Vector | Check Vector install
+  ansible.builtin.command: "vector --version"
+  register: result
+  changed_when: '"0.30.0" not in result.stdout'
+  tags:
+    - check_vector_version

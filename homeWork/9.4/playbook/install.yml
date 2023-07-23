@@ -1,0 +1,27 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  gather_facts: false
+  become: true
+  roles:
+    - clickhouse
+  tags:
+    - install_clickhouse
+
+- name: Install Lighthouse
+  hosts: lighthouse
+  gather_facts: false
+  become: true
+  roles:
+    - lighthouse_role
+  tags:
+    - install_lighthouse
+
+- name: Install Vector
+  hosts: vector
+  gather_facts: false
+  become: true
+  roles:
+    - vector_role
+  tags:
+    - install_vector
