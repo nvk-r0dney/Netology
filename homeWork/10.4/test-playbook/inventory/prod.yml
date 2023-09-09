@@ -3,11 +3,4 @@ all:
   hosts:
     jenkins-master-01:
       ansible_host: localhost
-  children:
-    jenkins:
-      children:
-        jenkins_masters:
-          hosts:
-            jenkins-master-01:
-  vars:
-    ansible_user: cloud-user
+      ansible_connection_type: local
