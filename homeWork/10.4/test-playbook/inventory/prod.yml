@@ -1,6 +1,5 @@
 ---
 all:
   hosts:
-    jenkins-master-01:
-      ansible_host: localhost
-      ansible_connection_type: local
+    localhost:
+      ansible_connection: local
