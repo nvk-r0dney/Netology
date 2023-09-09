@@ -1,0 +1,10 @@
+---
+- name: Test
+  hosts: all
+  become: true
+  tasks:
+    - name: Test | Install MC
+      ansible.builtin.dnf:
+        name:
+          - mc
+        state: present

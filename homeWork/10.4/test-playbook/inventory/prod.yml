@@ -1,0 +1,18 @@
+---
+all:
+  hosts:
+    jenkins-master-01:
+      ansible_host: 158.160.60.107
+    jenkins-agent-01:
+      ansible_host: 62.84.114.55
+  children:
+    jenkins:
+      children:
+        jenkins_masters:
+          hosts:
+            jenkins-master-01:
+        jenkins_agents:
+          hosts:
+            jenkins-agent-01:
+  vars:
+    ansible_user: cloud-user
