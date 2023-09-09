@@ -420,11 +420,38 @@ Pipeline успешно взял Jenkinsfile из репозитория и вы
     если не установлен параметр при запуске джобы (prod_run = True). 
     По умолчанию параметр имеет значение False и запускает прогон с флагами --check --diff.
 
-dfgdfg
+Добавил в Scripted Pipeline запуск с параметром, сам скрипт выглядит следующим образом:
+
+<img src="./img/06-scripted-pipeline-script.png" width=750px height=auto>
 
     7. Проверить работоспособность, исправить ошибки, 
     исправленный Pipeline вложить в репозиторий в файл ScriptedJenkinsfile.
 
-dfgdfg
+Для проверки написал простой Playbook, устанавливающий утилиту `mc` локально на localhost (каталог `test-playbook`).
+Прогнал выполнение pipeline дважды, со значением параметра `true` и `false`. Результаты ниже:
+
+<img src="./img/05-scripted-pipeline.png" width=750px height=auto>
+
+И взглянем на логи:
+
+1 stage
+
+<img src="./img/07-check-pipeline-result-log1.png" width=750px height=auto>
+
+2 stage - `prod_run==true`
+
+<img src="./img/07-check-pipeline-result-log2-true.png" width=750px height=auto>
+
+2 stage - `prod_run==false`
+
+<img src="./img/07-check-pipeline-result-log2-false.png" width=750px height=auto>
+
+Как видно, флаги `--check` и `--diff` - появились. Pipeline успешно отработал.
 
     8. Отправить ссылку на репозиторий с ролью и Declarative Pipeline и Scripted Pipeline.
+
+Репозиторий с ролью - <a href="https://github.com/nvk-r0dney/vector-role">ссылка</a>
+
+Declarative Pipeline Jenkinsfile - <a href="https://github.com/nvk-r0dney/vector-role/blob/main/Jenkinsfile">ссылка</a>
+
+Исправленный Scripted Pipeline Jenkinsfile - <a href="https://github.com/nvk-r0dney/Netology/blob/main/homeWork/10.4/pipeline/ScriptedJenkinsfile">ссылка</a>

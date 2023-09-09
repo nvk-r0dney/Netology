@@ -1,0 +1,21 @@
+node("linux"){
+    parameters {
+        booleanParam(name: 'prod_run', defaultValue: true)
+    }
+    stage("Git checkout"){
+        git branch: 'main', url: 'https://github.com/nvk-r0dney/Netology.git'
+    }
+    stage("Run playbook"){
+        if ( "${prod_run}" == "true" ){
+            dir('./homeWork/10.4/test-playbook/') {
+                sh 'ansible-playbook -i inventory/prod.yml site.yml'
+            }
+        }
+        else{
+            dir('./homeWork/10.4/test-playbook/') {
+                sh 'ansible-playbook -i inventory/prod.yml site.yml --check --diff'
+            }
+        }
+        
+    }
+}
