@@ -1,0 +1,33 @@
+stages:
+  - build
+  - deploy
+  - run
+
+image: docker:latest
+services:
+  - docker
+
+builder:
+  stage: build
+  script:
+    - docker build --squash -t $CI_REGISTRY/$CI_PROJECT_PATH/hello:gitlab-$CI_COMMIT_SHORT_SHA .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH/hello:gitlab-$CI_COMMIT_SHORT_SHA
+  except:
+    - main
+
+deployer:
+  stage: deploy
+  script:
+    - docker build --squash -t $CI_REGISTRY/$CI_PROJECT_PATH/hello:latest .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH/hello:latest
+  only:
+    - main
+
+prod-runner:
+  stage: run
+  script:
+    - docker run -d --name python-api -p "5290:5290" 51.250.79.77:5005/devops/netology/hello:latest
+  only:
+    - main

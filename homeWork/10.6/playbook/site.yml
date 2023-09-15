@@ -1,0 +1,93 @@
+---
+- name: Install Docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker | Remove old versions
+      ansible.builtin.yum:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+    - name: Install Docker | Install utils
+      ansible.builtin.yum:
+        name:
+          - yum-utils
+          - curl
+        state: present
+    - name: Install Docker | Add Docker repo
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: Docker-CE repo
+        baseurl:
+          - https://download.docker.com/linux/centos/$releasever/$basearch/stable
+        gpgcheck: true
+        gpgkey:
+          - https://download.docker.com/linux/centos/gpg
+        enabled: true
+    - name: Install Docker | Install packages
+      ansible.builtin.yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+      notify: Start docker service
+
+  handlers:
+    - name: Start docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+
+- name: Install Gitlab Runner
+  hosts: gitlab-runner-01
+  become: true
+  tasks:
+    - name: Install Gitlab Runner | Download repo-script
+      ansible.builtin.get_url:
+        url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh
+        dest: /home/centos/script.rpm.sh
+        mode: "0777"
+    - name: Install Gitlab Runner | Run repo-script
+      ansible.builtin.command: /home/centos/script.rpm.sh
+      register: my_output
+      changed_when: my_output.rc == 0
+    - name: Install Gitlab Runner | Install packages
+      ansible.builtin.yum:
+        name:
+          - gitlab-runner
+        state: present
+
+- name: Install Gitlab
+  hosts: gitlab-server-01
+  become: true
+  tasks:
+    - name: Install Gitlab | Download repo-script
+      ansible.builtin.get_url:
+        url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+        dest: /home/centos/script.rpm.sh
+        mode: "0777"
+    - name: Install Gitlab | Run repo-script
+      ansible.builtin.command:
+        cmd: /home/centos/script.rpm.sh
+      register: output
+      changed_when: output.rc == 0
+    - name: Install Gitlab | Install Gitlab
+      ansible.builtin.yum:
+        name:
+          - gitlab-ce
+        state: present
+    - name: Install Gitlab | Configure Gitlab
+      ansible.builtin.command:
+        cmd: gitlab-ctl reconfigure
+      register: conf_output
+      changed_when: conf_output.rc == 0
