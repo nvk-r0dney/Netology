@@ -1,0 +1,133 @@
+version: "3.8"
+
+services:
+  
+  elk01-hot:
+    image: elastic/elasticsearch:${VERSION}
+    container_name: elk01-hot
+    hostname: elk01-hot
+    environment:
+      - node.name=elk01-hot
+      - cluster.name=${CLUSTER_NAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - discovery.seed_hosts=elk01-hot,elk02-warm
+      - cluster.initial_master_nodes=elk01-hot,elk02-warm
+      - node.roles=master,data_content,data_hot 
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.host=0.0.0.0"
+      - xpack.security.enabled=false
+    mem_limit: ${ES_MEM_LIMIT}
+    volumes:
+      - ./elk01_data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "${ELK_PORT}:9200"
+    networks:
+      - elastic
+    depends_on:
+      - elk02-warm
+
+  elk02-warm:
+    image: elastic/elasticsearch:${VERSION}
+    container_name: elk02-warm
+    hostname: elk02-warm
+    environment:
+      - node.name=elk02-warm
+      - cluster.name=${CLUSTER_NAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - discovery.seed_hosts=elk01-hot,elk02-warm
+      - cluster.initial_master_nodes=elk01-hot,elk02-warm
+      - node.roles=master,data_warm 
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.host=0.0.0.0"
+      - xpack.security.enabled=false
+    mem_limit: ${ES_MEM_LIMIT}
+    volumes:
+      - ./elk02_data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - elastic
+
+  kibana:
+    image: kibana:${VERSION}
+    container_name: kibana
+    hostname: kibana
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_URL=http://elk01-hot:9200
+      - ELASTICSEARCH_HOSTS=["http://elk01-hot:9200","http://elk02-warm:9200"]
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+    mem_limit: ${KB_MEM_LIMIT}
+    volumes:
+      - ./kb_data:/usr/share/kibana/data
+    ports:
+      - "${KIBANA_PORT}:5601"
+    networks:
+      - elastic
+    depends_on:
+      - elk01-hot
+      - elk02-warm
+
+  logstash:
+    image: logstash:${VERSION}
+    container_name: logstash
+    hostname: logstash
+    user: root
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://elk01-hot:9200
+    mem_limit: ${ES_MEM_LIMIT}
+    volumes:
+      - ./conf/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./conf/logstash.yml:/opt/logstash/config/logstash.yml:ro
+    ports:
+      - "${LOGSTASH_PORT}:5046"
+    networks:
+      - elastic
+    depends_on:
+      - elk01-hot
+      - elk02-warm
+
+  filebeat:
+    image: elastic/filebeat:${VERSION}
+    container_name: filebeat
+    hostname: filebeat
+    user: root
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./conf/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    networks:
+      - elastic
+    depends_on:
+      - logstash
+
+  web-app:
+    image: library/python:3.9-alpine
+    container_name: web-app
+    hostname: web-app
+    volumes:
+      - ./pinger:/opt/
+    entrypoint: python3 /opt/run.py
+
+networks:
+  elastic:
+    driver: bridge
