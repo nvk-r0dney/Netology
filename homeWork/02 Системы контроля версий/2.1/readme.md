@@ -6,7 +6,8 @@
 2. Создан публичный репозиторий: <a href="https://github.com/nvk-r0dney/Netology">Ссылка на репозиторий</a>
 
 3. Создан Personal access token (Classic)
-<img src="img/token.png" width="600px" height="auto">
+
+    <img src="img/token.png" width="600px" height="auto">
 
 4. Репозиторий склонирован на рабочую машину командой git clone https://github.com/nvk-r0dney/Netology.git /home/rodney/Documents/Learning/
 
