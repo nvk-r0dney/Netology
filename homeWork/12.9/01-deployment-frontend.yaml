@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: network-lesson
+  labels:
+    app: frontend
+    author: nvk-r0dney
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        editor: vscode
+        author: nvk-r0dney
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: wbitt/network-multitool
+          ports:
+            - name: front-http-port
+              containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: network-lesson
+  labels:
+    author: nvk-r0dney
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: front-http-port
+      name: svc-frontend-port
