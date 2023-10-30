@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: volume-lesson
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-volumes-dpl
+  namespace: volume-lesson
+  labels:
+    app: test-volume
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-volume
+  template:
+    metadata:
+      labels:
+        app: test-volume
+        editor: vscode
+        author: nvk-r0dney
+    spec:
+      containers:
+        - name: busybox
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "while true; do echo 'Test to file' >> /output/test.txt; sleep 5; done;",
+            ]
+          volumeMounts:
+            - name: vol
+              mountPath: /output
+        - name: multitool
+          image: wbitt/network-multitool
+          volumeMounts:
+            - name: vol
+              mountPath: /input
+      volumes:
+        - name: vol
+          emptyDir: {}
