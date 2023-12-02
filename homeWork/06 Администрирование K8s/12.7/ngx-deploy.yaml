@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+    author: nvk-r0dney
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+              name: http-port
+              protocol: TCP
+        - name: multitool
+          image: wbitt/network-multitool
+          env:
+            - name: HTTP_PORT
+              value: "8080"
+          ports:
+            - containerPort: 8080
+              name: tool-http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web-nginx
+  labels:
+    author: nvk-r0dney
+spec:
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      name: svc-nginx-port
+      targetPort: http-port
+    - port: 8080
+      name: svc-tool-port
+      targetPort: tool-http
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multitool-pod
+  labels:
+    author: nvk-r0dney
+spec:
+  containers:
+    - image: wbitt/network-multitool
+      name: multitool
