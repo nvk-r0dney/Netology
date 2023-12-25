@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-deployment
+  namespace: app
+  labels:
+    app: cache
+    author: nvk-r0dney
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+        - name: cache
+          image: wbitt/network-multitool
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: cache-http
+              containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-svc
+  namespace: app
+  labels:
+    author: nvk-r0dney
+spec:
+  selector:
+    app: cache
+  ports:
+    - port: 80
+      targetPort: cache-http
+      name: csvc-port
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cache-policy
+  namespace: app
+  labels:
+    author: nvk-r0dney
+spec:
+  podSelector:
+    matchLabels:
+      app: cache
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: backend
+  policyTypes:
+    - Ingress
