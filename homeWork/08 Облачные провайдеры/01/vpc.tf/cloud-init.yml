@@ -1,0 +1,8 @@
+#cloud-config
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: sudo
+    lock_passwd: false
+    passwd: $6$rounds=4096$RWdGyWoimvEPpRkg$iRpsRFqE8XOJNGi1d2M1KhK4THu3SjdAGGJ5tzV9lVwY3zd5fwpx6qi3/SqEx.7CU1/3eQw78fyxkhOxv9cMa/
